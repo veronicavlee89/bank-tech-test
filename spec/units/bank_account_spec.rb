@@ -22,6 +22,11 @@ describe BankAccount do
       account = BankAccount.new()
       expect{ account.deposit('text') }.to raise_error("Invalid amount, must be a number")
     end
+
+    it 'raises an error if given amount is <= 0' do
+      account = BankAccount.new()
+      expect{ account.deposit(-3) }.to raise_error("Invalid amount, must be greater than 0")
+    end
   end
 
   describe '#print_statement' do
