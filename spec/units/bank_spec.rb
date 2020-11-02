@@ -21,5 +21,4 @@ describe Bank do
     bank.deposit(500.00)
     expect{ bank.print_statement }.to output("date || credit || debit || balance\n01/03/2020 || 500.00 || || 500.00\n").to_stdout
   end
-
 end
