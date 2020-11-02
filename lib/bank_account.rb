@@ -3,7 +3,7 @@ require 'time'
 require_relative './transaction'
 require_relative './statement'
 
-class Bank
+class BankAccount
   def initialize(transaction_class: Transaction)
     @transaction_class = transaction_class
     @transactions = []
@@ -15,8 +15,6 @@ class Bank
 
   def print_statement(transactions: @transactions, statement_class: Statement)
     statement = statement_class.new(transactions)
-    puts statement.text
+    statement.print
   end
-
-
 end

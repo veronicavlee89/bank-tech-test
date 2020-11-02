@@ -1,5 +1,4 @@
 class Statement
-  attr_reader :text
 
   def initialize(transactions)
     @text = ""
@@ -11,6 +10,10 @@ class Statement
       formatted_transactions << "#{format_date(transaction.datetime)} || #{format_amount(transaction.amount)} || || #{format_amount(running_balance)}\n"
     end
     @text += formatted_transactions.reverse.join
+  end
+
+  def print
+    puts @text
   end
 
   private

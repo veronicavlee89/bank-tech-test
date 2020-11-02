@@ -12,29 +12,36 @@ class TransactionDouble
 end
 
 describe Statement do
-  it 'returns a statement containing 02/11/2020 || 50.00 || || 50.00 given an account with a credit of 50.00' do
-    transaction_dbl = TransactionDouble.new(type: :credit, amount: 50.00, datetime: Time.parse("2020-11-02 10:50:15"))
-    # account_dbl = double('account', :transactions => [transaction_dbl])
-    expect(Statement.new([transaction_dbl]).text).to eq("date || credit || debit || balance\n02/11/2020 || 50.00 || || 50.00\n")
+  it 'prints a statement containing 02/11/2020 || 50.25 || || 50.25 given a credit transaction of 50.25' do
+    transaction_dbl = TransactionDouble.new(type: :credit, amount: 50.25, datetime: Time.parse("2020-11-02 10:50:15"))
+    statement = Statement.new([transaction_dbl])
+    expect{ statement.print }.to output("date || credit || debit || balance\n02/11/2020 || 50.25 || || 50.25\n").to_stdout
   end
 
-  # it 'prints a statement containing 01/03/2020 || 500.00 || || 500.00 when a deposit of 500.00 has been made' do
-  #   bank = Bank.new
-  #   allow(Time).to receive(:now).and_return(Time.parse("2020-03-01 10:50:15"))
-  #   bank.deposit(500.00)
-  #   expect{ bank.print_statement }.to output("date || credit || debit || balance\n01/03/2020 || 500.00 || || 500.00\n").to_stdout
-  # end
-  #
-  # it 'prints the running balance as at the time of each transaction' do
-  #   bank = Bank.new
-  #   allow(Time).to receive(:now).and_return(Time.parse("2020-03-01 10:50:15"))
-  #   bank.deposit(20.00)
-  #   allow(Time).to receive(:now).and_return(Time.parse("2020-11-02 12:25:15"))
-  #   bank.deposit(500.00)
-  #   expect{ bank.print_statement }.to output(
-  #                                       "date || credit || debit || balance\n" +
-  #                                         "02/11/2020 || 500.00 || || 520.00\n" +
-  #                                         "01/03/2020 || 20.00 || || 20.00\n"
-  #                                     ).to_stdout
-  # end
+  it 'formats amounts with no decimal places to have 2 decimals' do
+    transaction_dbl = TransactionDouble.new(type: :credit, amount: 20, datetime: Time.parse("2020-11-02 10:50:15"))
+    # account_dbl = double('account', :transactions => [transaction_dbl])
+    statement = Statement.new([transaction_dbl])
+    expect{ statement.print }.to output("date || credit || debit || balance\n02/11/2020 || 20.00 || || 20.00\n").to_stdout
+  end
+
+  it 'formats amounts with 1 decimal place to have 2 decimals' do
+    transaction_dbl = TransactionDouble.new(type: :credit, amount: 12.5, datetime: Time.parse("2020-11-02 10:50:15"))
+    # account_dbl = double('account', :transactions => [transaction_dbl])
+    statement = Statement.new([transaction_dbl])
+    expect{ statement.print }.to output("date || credit || debit || balance\n02/11/2020 || 12.50 || || 12.50\n").to_stdout
+  end
+
+  it 'formats one transaction per line with a running balance, in reverse chronological order' do
+    transaction_dbl_1 = TransactionDouble.new(type: :credit, amount: 20, datetime: Time.parse("2020-10-30 15:22:08"))
+    transaction_dbl_2 = TransactionDouble.new(type: :credit, amount: 120.5, datetime: Time.parse("2020-11-02 10:50:15"))
+    transactions = [transaction_dbl_1, transaction_dbl_2]
+    statement = Statement.new(transactions)
+
+    expect{ statement.print }.to output(
+                                        "date || credit || debit || balance\n" +
+                                          "02/11/2020 || 120.50 || || 140.50\n" +
+                                          "30/10/2020 || 20.00 || || 20.00\n"
+                                      ).to_stdout
+  end
 end
