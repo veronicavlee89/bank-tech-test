@@ -14,7 +14,13 @@ class Bank
 
   def print_statement
     puts("date || credit || debit || balance")
-    puts("#{format_date(@transactions[0].datetime)} || #{format_amount(@transactions[0].amount)} || || #{format_amount(@transactions[0].amount)}")
+    formatted_transactions = []
+    running_balance = 0
+    @transactions.each do |transaction|
+      running_balance += transaction.amount
+      formatted_transactions << "#{format_date(transaction.datetime)} || #{format_amount(transaction.amount)} || || #{format_amount(running_balance)}"
+    end
+    puts formatted_transactions.reverse
   end
 
   def format_amount(amount)

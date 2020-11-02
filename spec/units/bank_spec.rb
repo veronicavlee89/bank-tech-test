@@ -21,4 +21,17 @@ describe Bank do
     bank.deposit(500.00)
     expect{ bank.print_statement }.to output("date || credit || debit || balance\n01/03/2020 || 500.00 || || 500.00\n").to_stdout
   end
+
+  it 'prints the running balance as at the time of each transaction' do
+    bank = Bank.new
+    allow(Time).to receive(:now).and_return(Time.parse("2020-03-01 10:50:15"))
+    bank.deposit(20.00)
+    allow(Time).to receive(:now).and_return(Time.parse("2020-11-02 12:25:15"))
+    bank.deposit(500.00)
+    expect{ bank.print_statement }.to output(
+                                            "date || credit || debit || balance\n" +
+                                            "02/11/2020 || 500.00 || || 520.00\n" +
+                                            "01/03/2020 || 20.00 || || 20.00\n"
+                                            ).to_stdout
+  end
 end
