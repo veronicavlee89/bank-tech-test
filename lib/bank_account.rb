@@ -12,12 +12,18 @@ class BankAccount
   end
 
   def deposit(amount)
-    raise "Invalid amount, can't have more than 2 decimal places" if amount.to_s.split('.').last.size > 2
+    raise "Invalid amount, can't have more than 2 decimal places" if has_over_two_decimals?(amount)
     @transactions << @transaction_class.new(type: :credit, amount: amount, datetime: Time.now)
   end
 
   def print_statement(transactions: @transactions, statement_class: Statement)
     statement = statement_class.new(transactions)
     statement.print
+  end
+
+  private
+
+  def has_over_two_decimals?(amount)
+    amount.to_s.split('.').last.size > 2
   end
 end
