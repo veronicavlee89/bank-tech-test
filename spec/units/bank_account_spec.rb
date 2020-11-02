@@ -12,6 +12,11 @@ describe BankAccount do
       expect(transaction_class_dbl).to receive(:new).once.with({amount: 50, datetime: time_dbl, type: :credit})
       expect{ account.deposit(50) }.to change{ account.transactions.count }.by(1)
     end
+
+    it 'raises an error if given an amount with > 2 decimal places' do
+      account = BankAccount.new()
+      expect{ account.deposit(43.125) }.to raise_error(RuntimeError)
+    end
   end
 
   describe '#print_statement' do

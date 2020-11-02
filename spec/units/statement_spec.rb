@@ -20,14 +20,12 @@ describe Statement do
 
   it 'formats amounts with no decimal places to have 2 decimals' do
     transaction_dbl = TransactionDouble.new(type: :credit, amount: 20, datetime: Time.parse("2020-11-02 10:50:15"))
-    # account_dbl = double('account', :transactions => [transaction_dbl])
     statement = Statement.new([transaction_dbl])
     expect{ statement.print }.to output("date || credit || debit || balance\n02/11/2020 || 20.00 || || 20.00\n").to_stdout
   end
 
   it 'formats amounts with 1 decimal place to have 2 decimals' do
     transaction_dbl = TransactionDouble.new(type: :credit, amount: 12.5, datetime: Time.parse("2020-11-02 10:50:15"))
-    # account_dbl = double('account', :transactions => [transaction_dbl])
     statement = Statement.new([transaction_dbl])
     expect{ statement.print }.to output("date || credit || debit || balance\n02/11/2020 || 12.50 || || 12.50\n").to_stdout
   end
