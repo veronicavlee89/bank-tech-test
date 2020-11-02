@@ -10,6 +10,6 @@ class Bank
   end
 
   def print_statement
-    "date || credit || debit || balance\n02/11/2020 || 50.00 || || 50.00"
+    print("date || credit || debit || balance\n02/11/2020 || 50.00 || || 50.00")
   end
 end

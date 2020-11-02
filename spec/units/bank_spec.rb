@@ -5,6 +5,7 @@ describe Bank do
     bank = Bank.new
     bank.deposit(50.00)
     allow(Time).to receive(:now).and_return(Time.parse("2020-11-02 12:25:15"))
-    expect(bank.print_statement).to eq("date || credit || debit || balance\n02/11/2020 || 50.00 || || 50.00")
+    expect{ bank.print_statement }.to output("date || credit || debit || balance\n02/11/2020 || 50.00 || || 50.00").to_stdout
   end
+
 end
