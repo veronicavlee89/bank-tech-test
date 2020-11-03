@@ -2,6 +2,7 @@ class Statement
 
   def initialize(transactions)
     @rows = []
+    @running_balance = 0
     add_header
     add_transactions(transactions)
   end
@@ -17,19 +18,23 @@ class Statement
   end
 
   def add_transactions(transactions)
-    running_balance = 0
+    transactions.sort_by! { |transaction| transaction.datetime }
     formatted_transactions = transactions.map do |transaction|
-      running_balance += is_credit?(transaction) ? transaction.amount : -transaction.amount
-      format_transaction(transaction, running_balance)
+      update_balance(transaction)
+      format_transaction(transaction)
     end
     @rows << formatted_transactions.reverse
   end
 
-  def format_transaction(transaction, running_balance)
+  def update_balance(transaction)
+    @running_balance += is_credit?(transaction) ? transaction.amount : -transaction.amount
+  end
+
+  def format_transaction(transaction)
     "#{format_date(transaction.datetime)} || " +
       "#{format_amount(transaction.amount) + " " if is_credit?(transaction)}|| " +
       "#{format_amount(transaction.amount) + " " if is_debit?(transaction)}|| " +
-      "#{format_amount(running_balance)}"
+      "#{format_amount(@running_balance)}"
   end
 
   def is_credit?(transaction)

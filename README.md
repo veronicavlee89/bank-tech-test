@@ -31,6 +31,7 @@ date || credit || debit || balance
 This program has been built in Ruby and is run via IRB in a terminal.
 
 - Clone this repo and navigate to the directory in your terminal
+- Run `bundle install`
 - Run `irb`
 - Require the bank_account file
     `require './lib/bank_account'`
@@ -81,35 +82,45 @@ As an account holder
 I want to be able to make a deposit of a specified amount
 So that I can put money into my account for safe keeping
 
-As an account holder
+As a user
 I want to be able to make a withdrawal of a specified amount
 So that I can take money from my account when I need it
 
-As an account holder
+As a user
+I want to be able to specify a transaction date in the past (canot be in the future)
+So that I can manually backdate transactions that were missed
+
+As a user
 I want to print a statement of all transactions in my account
 So that I can view the history of my deposits and withdrawals
 
-As an account holder
+As a user
 I want my statement to show a running balance with each transaction
 So that I can see what my account balance was at that time
+
+As a user
+I want my statement to print the transactions in reverse chronological order
+So that I can easily follow the transactions when reading
+
+As a user
+I want all statements to have columns for date, credit, debit and balance
+So that the format is standard regardless of the transactions
 
 As a product owner
 I want to only allow amounts that are greater than 0 and up to 2 decimal places
 So that the transaction data maintains integrity
-
-As a product owner
-I want all statements to have columns for date, credit, debit and balance
-So that the format is standard regardless of the transactions
 ```
 
 * Assumption was made that an account has an overdraft and can go into a negative balance.
+* I have used a datetime on the transaction rather than just date, so ordering will handle when multiple transactions  
+are made in the same day.
 
 **Design**
 
 | Objects 	    | Messages             	                |
 |------------   |------------------------------------   |
-| BankAccount 	| deposit(amount) 	                    |
-|             	| withdraw(amount)                      |
+| BankAccount 	| deposit(amount, date(optional)) 	    |
+|             	| withdraw(amount, date(optional))      |
 |            	| print_statement 	                    |
 | Statement   	| initialize(transactions)              |
 |              	| print                                 |
