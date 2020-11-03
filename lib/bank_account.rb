@@ -14,6 +14,13 @@ class BankAccount
   def deposit(amount)
     validate_amount(amount)
     @transactions << @transaction_class.new(type: :credit, amount: amount, datetime: Time.now)
+    @transactions.last
+  end
+
+  def withdraw(amount)
+    validate_amount(amount)
+    @transactions << @transaction_class.new(type: :debit, amount: amount, datetime: Time.now)
+    @transactions.last
   end
 
   def print_statement(transactions: @transactions, statement_class: Statement)
@@ -38,6 +45,6 @@ class BankAccount
   end
 
   def has_over_two_decimals?(amount)
-    amount.to_s.split('.').last.size > 2
+    amount.is_a?(Float) && amount.to_s.split('.').last.size > 2
   end
 end
