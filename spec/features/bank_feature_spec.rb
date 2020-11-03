@@ -63,4 +63,9 @@ describe 'Feature: Banking' do
                                              "01/01/2011 || 2000.00 || || 2000.00\n"
                                            ).to_stdout
   end
+
+  it 'raises an error when using an invalid amount' do
+    account = BankAccount.new
+    expect{ account.deposit(55.132) }.to raise_error(RuntimeError)
+  end
 end
