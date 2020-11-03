@@ -12,9 +12,7 @@ class BankAccount
   end
 
   def deposit(amount)
-    raise "Invalid amount, must be a number" unless is_a_number?(amount)
-    raise "Invalid amount, must be greater than 0" unless is_greater_than_zero?(amount)
-    raise "Invalid amount, can't have more than 2 decimal places" if has_over_two_decimals?(amount)
+    validate_amount(amount)
     @transactions << @transaction_class.new(type: :credit, amount: amount, datetime: Time.now)
   end
 
@@ -24,6 +22,12 @@ class BankAccount
   end
 
   private
+
+  def validate_amount(amount)
+    raise "Invalid amount, must be a number" unless is_a_number?(amount)
+    raise "Invalid amount, must be greater than 0" unless is_greater_than_zero?(amount)
+    raise "Invalid amount, can't have more than 2 decimal places" if has_over_two_decimals?(amount)
+  end
 
   def is_a_number?(amount)
     amount.is_a?(Integer) || amount.is_a?(Float)
