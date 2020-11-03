@@ -19,14 +19,17 @@ class Statement
   def add_transactions(transactions)
     running_balance = 0
     formatted_transactions = transactions.map do |transaction|
-      running_balance += transaction.amount
+      running_balance += transaction.type == :credit ? transaction.amount : -transaction.amount
       format_transaction(transaction, running_balance)
     end
     @rows << formatted_transactions.reverse
   end
 
   def format_transaction(transaction, running_balance)
-    "#{format_date(transaction.datetime)} || #{format_amount(transaction.amount)} || || #{format_amount(running_balance)}"
+    "#{format_date(transaction.datetime)} || " +
+      "#{format_amount(transaction.amount) + " " if transaction.type == :credit}|| " +
+      "#{format_amount(transaction.amount) + " " if transaction.type == :debit}|| " +
+      "#{format_amount(running_balance)}"
   end
 
   def format_amount(amount)

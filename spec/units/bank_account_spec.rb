@@ -66,8 +66,9 @@ describe BankAccount do
       statement_class_dbl = double('statement_class', new: statement_dbl)
 
       account.deposit(50)
+      account.withdraw(30)
 
-      expect(statement_class_dbl).to receive(:new).once.with([transaction_dbl])
+      expect(statement_class_dbl).to receive(:new).once.with([transaction_dbl, transaction_dbl])
       expect(statement_dbl).to receive(:print).once
 
       account.print_statement(statement_class: statement_class_dbl)
