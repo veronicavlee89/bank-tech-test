@@ -31,7 +31,6 @@ date || credit || debit || balance
 This program has been built in Ruby and is run via IRB in a terminal.
 
 - Clone this repo and navigate to the directory in your terminal
-- Run `bundle install`
 - Run `irb`
 - Require the bank_account file
     `require './lib/bank_account'`
