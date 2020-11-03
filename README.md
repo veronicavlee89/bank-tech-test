@@ -102,11 +102,13 @@ I want all statements to have columns for date, credit, debit and balance
 So that the format is standard regardless of the transactions
 ```
 
+* Assumption was made that an account has an overdraft and can go into a negative balance.
+
 **Design**
 
 | Objects 	    | Messages             	                |
 |------------   |------------------------------------   |
-| Bank account 	| deposit(amount) 	                    |
+| BankAccount 	| deposit(amount) 	                    |
 |             	| withdraw(amount)                      |
 |            	| print_statement 	                    |
 | Statement   	| initialize(transactions)              |
