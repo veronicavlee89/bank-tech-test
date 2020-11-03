@@ -18,6 +18,7 @@ class Statement
 
   def add_transactions(transactions)
     running_balance = 0
+    transactions.sort_by! { |transaction| transaction.datetime }
     formatted_transactions = transactions.map do |transaction|
       running_balance += is_credit?(transaction) ? transaction.amount : -transaction.amount
       format_transaction(transaction, running_balance)
