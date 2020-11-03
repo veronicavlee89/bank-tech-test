@@ -42,12 +42,23 @@ describe 'Feature: Banking' do
     account = BankAccount.new
     allow(Time).to receive(:now).and_return(Time.parse("2012-01-10 10:50:15"))
     account.deposit(1000)
-    account.deposit(2000, '01/01/2011')
+    allow(Time).to receive(:now).and_return(Time.parse("2012-01-13 12:25:15"))
+    account.deposit(2000)
     allow(Time).to receive(:now).and_return(Time.parse("2012-01-14 12:25:15"))
     account.withdraw(500)
     expect{ account.print_statement }.to output(
                                            "date || credit || debit || balance\n" +
                                              "14/01/2012 || || 500.00 || 2500.00\n" +
+                                             "13/01/2012 || 2000.00 || || 3000.00\n" +
+                                             "10/01/2012 || 1000.00 || || 1000.00\n"
+                                         ).to_stdout
+
+    account.deposit(2000, '01/01/2011')
+
+    expect{ account.print_statement }.to output(
+                                           "date || credit || debit || balance\n" +
+                                             "14/01/2012 || || 500.00 || 4500.00\n" +
+                                             "13/01/2012 || 2000.00 || || 5000.00\n" +
                                              "10/01/2012 || 1000.00 || || 3000.00\n" +
                                              "01/01/2011 || 2000.00 || || 2000.00\n"
                                            ).to_stdout

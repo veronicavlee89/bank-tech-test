@@ -29,6 +29,11 @@ describe BankAccount do
         expect(transaction_class_dbl).to receive(:new).once.with({amount: 50, datetime: expected_date, type: :credit})
         expect{ account.deposit(50, '01/01/2020') }.to change{ account.transactions.count }.by(1)
       end
+
+      it 'raises an error if specified date is in the future' do
+        account = BankAccount.new
+        expect{ account.deposit(43, Date.tomorrow.to_s) }.to raise_error("Invalid date, cannot be in the future")
+      end
     end
 
     it 'raises an error if given an amount with > 2 decimal places' do

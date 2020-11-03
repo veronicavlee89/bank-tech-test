@@ -1,4 +1,5 @@
 require 'time'
+require 'active_support/core_ext/time/calculations'
 
 require_relative './transaction'
 require_relative './statement'
@@ -13,11 +14,13 @@ class BankAccount
 
   def deposit(amount, date = nil)
     validate_amount(amount)
+    validate_date(date)
     add_transaction(:credit, amount, date)
   end
 
   def withdraw(amount, date = nil)
     validate_amount(amount)
+    validate_date(date)
     add_transaction(:debit, amount, date)
   end
 
@@ -32,6 +35,12 @@ class BankAccount
     raise "Invalid amount, must be a number" unless is_a_number?(amount)
     raise "Invalid amount, must be greater than 0" unless is_greater_than_zero?(amount)
     raise "Invalid amount, can't have more than 2 decimal places" if has_over_two_decimals?(amount)
+  end
+
+  def validate_date(date)
+    if !date.nil?
+      raise "Invalid date, cannot be in the future" if Time.parse(date).future?
+    end
   end
 
   def add_transaction(type, amount, date)
