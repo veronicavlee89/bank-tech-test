@@ -15,7 +15,7 @@ describe BankAccount do
 
     it 'raises an error if given an amount with > 2 decimal places' do
       account = BankAccount.new
-      expect{ account.deposit(43.125) }.to raise_error("Invalid amount, can't have more than 2 decimal places")
+      expect{ account.deposit(43.126) }.to raise_error("Invalid amount, can't have more than 2 decimal places")
     end
 
     it 'raises an error if given amount is not a number' do
@@ -39,6 +39,21 @@ describe BankAccount do
 
       expect(transaction_class_dbl).to receive(:new).once.with({amount: 50, datetime: time_dbl, type: :debit})
       expect{ account.withdraw(50) }.to change{ account.transactions.count }.by(1)
+    end
+
+    it 'raises an error if given an amount with > 2 decimal places' do
+      account = BankAccount.new
+      expect{ account.withdraw(0.111) }.to raise_error("Invalid amount, can't have more than 2 decimal places")
+    end
+
+    it 'raises an error if given amount is not a number' do
+      account = BankAccount.new
+      expect{ account.withdraw('text') }.to raise_error("Invalid amount, must be a number")
+    end
+
+    it 'raises an error if given amount is <= 0' do
+      account = BankAccount.new
+      expect{ account.withdraw(-3) }.to raise_error("Invalid amount, must be greater than 0")
     end
   end
 

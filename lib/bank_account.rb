@@ -17,6 +17,7 @@ class BankAccount
   end
 
   def withdraw(amount)
+    validate_amount(amount)
     @transactions << @transaction_class.new(type: :debit, amount: amount, datetime: Time.now)
   end
 
