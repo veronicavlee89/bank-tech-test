@@ -35,21 +35,6 @@ describe BankAccount do
         expect{ account.deposit(43, Date.tomorrow.to_s) }.to raise_error("Invalid date, cannot be in the future")
       end
     end
-
-    it 'raises an error if given an amount with > 2 decimal places' do
-      account = BankAccount.new
-      expect{ account.deposit(43.126) }.to raise_error("Invalid amount, can't have more than 2 decimal places")
-    end
-
-    it 'raises an error if given amount is not a number' do
-      account = BankAccount.new
-      expect{ account.deposit('text') }.to raise_error("Invalid amount, must be a number")
-    end
-
-    it 'raises an error if given amount is <= 0' do
-      account = BankAccount.new
-      expect{ account.deposit(-3) }.to raise_error("Invalid amount, must be greater than 0")
-    end
   end
 
   describe '#withdraw' do
@@ -77,21 +62,6 @@ describe BankAccount do
         expect(transaction_class_dbl).to receive(:new).once.with({amount: 50, datetime: expected_date, type: :debit})
         expect{ account.withdraw(50, '01/01/2020') }.to change{ account.transactions.count }.by(1)
       end
-    end
-
-    it 'raises an error if given an amount with > 2 decimal places' do
-      account = BankAccount.new
-      expect{ account.withdraw(0.111) }.to raise_error("Invalid amount, can't have more than 2 decimal places")
-    end
-
-    it 'raises an error if given amount is not a number' do
-      account = BankAccount.new
-      expect{ account.withdraw('text') }.to raise_error("Invalid amount, must be a number")
-    end
-
-    it 'raises an error if given amount is <= 0' do
-      account = BankAccount.new
-      expect{ account.withdraw(-3) }.to raise_error("Invalid amount, must be greater than 0")
     end
   end
 
