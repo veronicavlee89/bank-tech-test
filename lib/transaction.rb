@@ -1,5 +1,4 @@
 class Transaction
-  require 'active_support/core_ext/time/calculations'
 
   attr_reader :type, :amount, :datetime
 
@@ -19,7 +18,7 @@ class Transaction
   end
 
   def validate_date(datetime)
-    raise "Invalid date, cannot be in the future" if datetime.to_date.future?
+    raise "Invalid date, cannot be in the future" if datetime.to_date > Date.today
   end
 
   def is_a_number?(amount)

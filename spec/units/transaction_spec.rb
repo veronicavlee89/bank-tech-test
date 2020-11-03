@@ -14,6 +14,6 @@ describe Transaction do
   end
 
   it 'raises an error if specified date is in the future' do
-    expect{ Transaction.new(type: :credit, amount: 300, datetime: Date.tomorrow) }.to raise_error("Invalid date, cannot be in the future")
+    expect{ Transaction.new(type: :credit, amount: 300, datetime: Date.today + 1) }.to raise_error("Invalid date, cannot be in the future")
   end
 end
