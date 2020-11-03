@@ -29,6 +29,19 @@ describe BankAccount do
     end
   end
 
+  describe '#withdraw' do
+    it 'creates a debit transaction and stores it in the account transactions' do
+      transaction_dbl = double('transaction', type: :debit)
+      transaction_class_dbl = double('transaction_class', new: transaction_dbl)
+      time_dbl = Time.parse("2020-11-03 16:01:00")
+      allow(Time).to receive(:now).and_return(time_dbl)
+      account = BankAccount.new(transaction_class: transaction_class_dbl)
+
+      expect(transaction_class_dbl).to receive(:new).once.with({amount: 50, datetime: time_dbl, type: :debit})
+      expect{ account.withdraw(50) }.to change{ account.transactions.count }.by(1)
+    end
+  end
+
   describe '#print_statement' do
     it "creates a statement with the account's transactions and instructs statement to print" do
       transaction_dbl = double('transaction')
