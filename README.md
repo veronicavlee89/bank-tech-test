@@ -93,6 +93,10 @@ As an account holder
 I want my statement to show a running balance with each transaction
 So that I can see what my account balance was at that time
 
+As an account holder
+I want my statement to print the transactions in reverse chronological order
+So that I can easily follow the transactions when reading
+
 As a product owner
 I want to only allow amounts that are greater than 0 and up to 2 decimal places
 So that the transaction data maintains integrity
@@ -103,6 +107,8 @@ So that the format is standard regardless of the transactions
 ```
 
 * Assumption was made that an account has an overdraft and can go into a negative balance.
+* I have used a datetime on the transaction rather than just date, so ordering will handle when multiple transactions  
+are made in the same day.
 
 **Design**
 

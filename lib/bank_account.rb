@@ -11,16 +11,14 @@ class BankAccount
     @transactions = []
   end
 
-  def deposit(amount)
+  def deposit(amount, date = nil)
     validate_amount(amount)
-    @transactions << @transaction_class.new(type: :credit, amount: amount, datetime: Time.now)
-    @transactions.last
+    add_transaction(:credit, amount, date)
   end
 
-  def withdraw(amount)
+  def withdraw(amount, date = nil)
     validate_amount(amount)
-    @transactions << @transaction_class.new(type: :debit, amount: amount, datetime: Time.now)
-    @transactions.last
+    add_transaction(:debit, amount, date)
   end
 
   def print_statement(transactions: @transactions, statement_class: Statement)
@@ -34,6 +32,15 @@ class BankAccount
     raise "Invalid amount, must be a number" unless is_a_number?(amount)
     raise "Invalid amount, must be greater than 0" unless is_greater_than_zero?(amount)
     raise "Invalid amount, can't have more than 2 decimal places" if has_over_two_decimals?(amount)
+  end
+
+  def add_transaction(type, amount, date)
+    @transactions << @transaction_class.new(type: type, amount: amount, datetime: datetime(date))
+    @transactions.last
+  end
+
+  def datetime(date)
+    date.nil? ? Time.now : Time.parse(date)
   end
 
   def is_a_number?(amount)
