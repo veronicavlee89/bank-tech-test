@@ -43,6 +43,6 @@ class BankAccount
   end
 
   def has_over_two_decimals?(amount)
-    amount.to_s.split('.').last.size > 2
+    amount.is_a?(Float) && amount.to_s.split('.').last.size > 2
   end
 end

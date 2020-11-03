@@ -26,7 +26,7 @@ describe 'Feature: Banking' do
     account = BankAccount.new
     allow(Time).to receive(:now).and_return(Time.parse("2012-01-10 10:50:15"))
     account.deposit(1000)
-    allow(Time).to receive(:now).and_return(Time.parse("2012-01-03 12:25:15"))
+    allow(Time).to receive(:now).and_return(Time.parse("2012-01-13 12:25:15"))
     account.deposit(2000)
     allow(Time).to receive(:now).and_return(Time.parse("2012-01-14 12:25:15"))
     account.withdraw(500)
