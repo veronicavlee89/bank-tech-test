@@ -1,7 +1,7 @@
 Bank tech test
 =================
 
-##Task
+## Task
 
 The task was to build a program that meets the following specification:
 
