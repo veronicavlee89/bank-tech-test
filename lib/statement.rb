@@ -1,10 +1,9 @@
 class Statement
 
+  HEADER = "date || credit || debit || balance"
+
   def initialize(transactions)
-    @rows = []
-    @running_balance = 0
-    add_header
-    add_transactions(transactions)
+    @rows = [HEADER, formatted_transactions(transactions)]
   end
 
   def print
@@ -13,28 +12,27 @@ class Statement
 
   private
 
-  def add_header
-    @rows << "date || credit || debit || balance"
-  end
-
-  def add_transactions(transactions)
+  def formatted_transactions(transactions)
     transactions.sort_by! { |transaction| transaction.datetime }
-    formatted_transactions = transactions.map do |transaction|
-      update_balance(transaction)
-      format_transaction(transaction)
+    formatted_transactions = transactions.map.with_index do |transaction, index|
+      format_transaction(transaction, running_balance(transactions, index))
     end
-    @rows << formatted_transactions.reverse
+    formatted_transactions.reverse
   end
 
-  def update_balance(transaction)
-    @running_balance += is_credit?(transaction) ? transaction.amount : -transaction.amount
+  def running_balance(transactions, index)
+    transactions[0..index].reduce(0) { |sum, transaction| sum + signed_amount(transaction) }
   end
 
-  def format_transaction(transaction)
+  def signed_amount(transaction)
+    is_credit?(transaction) ? transaction.amount_pence : -transaction.amount_pence
+  end
+
+  def format_transaction(transaction, running_balance)
     "#{format_date(transaction.datetime)} || " +
-      "#{format_amount(transaction.amount) + " " if is_credit?(transaction)}|| " +
-      "#{format_amount(transaction.amount) + " " if is_debit?(transaction)}|| " +
-      "#{format_amount(@running_balance)}"
+      "#{format_amount(transaction.amount_pence) + " " if is_credit?(transaction)}|| " +
+      "#{format_amount(transaction.amount_pence) + " " if is_debit?(transaction)}|| " +
+      "#{format_amount(running_balance)}"
   end
 
   def is_credit?(transaction)
@@ -45,8 +43,8 @@ class Statement
     transaction.type == :debit
   end
 
-  def format_amount(amount)
-    '%.2f' % amount
+  def format_amount(amount_pence)
+    '%.2f' % (amount_pence / 100)
   end
 
   def format_date(date)
