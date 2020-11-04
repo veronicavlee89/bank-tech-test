@@ -22,7 +22,7 @@ class Transaction
   end
 
   def is_a_number?(amount)
-    amount.is_a?(Integer) || amount.is_a?(Float)
+    amount.is_a?(Numeric)
   end
 
   def is_greater_than_zero?(amount)
