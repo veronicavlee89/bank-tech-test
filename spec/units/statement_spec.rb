@@ -50,4 +50,15 @@ describe Statement do
                                           "30/10/2020 || 20.00 || || 20.00\n"
                                       ).to_stdout
   end
+
+  it 'formats the date in alternate format of mm/dd/yyyy if selected' do
+    transaction_double = TransactionDouble.new(type: :credit, amount: 50.25, datetime: Time.parse("2020-11-02 10:50:15"))
+    statement = Statement.new([transaction_double], date_format: :mm_dd)
+    expect{ statement.print }.to output("date || credit || debit || balance\n11/02/2020 || 50.25 || || 50.25\n").to_stdout
+  end
+
+  it 'raises an error if date_format given is not :dd_mm or :mm_dd' do
+    transaction_double = TransactionDouble.new(type: :credit, amount: 50.25, datetime: Time.parse("2020-11-02 10:50:15"))
+    expect{ Statement.new([transaction_double], date_format: :dd_mm_yyyy) }.to raise_error("Invalid date format, must be :dd_mm or :mm_dd")
+  end
 end
