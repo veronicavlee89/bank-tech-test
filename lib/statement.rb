@@ -13,13 +13,15 @@ class Statement
   private
 
   def formatted_transactions(transactions)
-    running_balance = 0
     transactions.sort_by! { |transaction| transaction.datetime }
-    formatted_transactions = transactions.map do |transaction|
-      running_balance += signed_amount(transaction)
-      format_transaction(transaction, running_balance)
+    formatted_transactions = transactions.map.with_index do |transaction, index|
+      format_transaction(transaction, running_balance(transactions, index))
     end
     formatted_transactions.reverse
+  end
+
+  def running_balance(transactions, index)
+    transactions[0..index].reduce(0) { |sum, transaction| sum + signed_amount(transaction) }
   end
 
   def signed_amount(transaction)
