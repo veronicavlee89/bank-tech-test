@@ -2,11 +2,11 @@ require 'statement'
 require 'time'
 
 class TransactionDouble
-  attr_reader :type, :amount, :datetime
+  attr_reader :type, :amount_pence, :datetime
 
   def initialize(type:, amount:, datetime:)
     @type = type
-    @amount = amount
+    @amount_pence = amount * 100
     @datetime = datetime
   end
 end

@@ -1,12 +1,12 @@
 class Transaction
 
-  attr_reader :type, :amount, :datetime
+  attr_reader :type, :amount_pence, :datetime
 
   def initialize(type:, amount:, datetime:)
     validate_amount(amount)
     validate_date(datetime)
     @type = type
-    @amount = amount
+    @amount_pence = pence(amount)
     @datetime = datetime
   end
 
@@ -31,5 +31,9 @@ class Transaction
 
   def has_over_two_decimals?(amount)
     amount.is_a?(Float) && amount.to_s.split('.').last.size > 2
+  end
+
+  def pence(amount)
+    amount * 100
   end
 end

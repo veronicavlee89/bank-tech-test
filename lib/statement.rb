@@ -25,13 +25,13 @@ class Statement
   end
 
   def signed_amount(transaction)
-    is_credit?(transaction) ? transaction.amount : -transaction.amount
+    is_credit?(transaction) ? transaction.amount_pence : -transaction.amount_pence
   end
 
   def format_transaction(transaction, running_balance)
     "#{format_date(transaction.datetime)} || " +
-      "#{format_amount(transaction.amount) + " " if is_credit?(transaction)}|| " +
-      "#{format_amount(transaction.amount) + " " if is_debit?(transaction)}|| " +
+      "#{format_amount(transaction.amount_pence) + " " if is_credit?(transaction)}|| " +
+      "#{format_amount(transaction.amount_pence) + " " if is_debit?(transaction)}|| " +
       "#{format_amount(running_balance)}"
   end
 
@@ -43,8 +43,8 @@ class Statement
     transaction.type == :debit
   end
 
-  def format_amount(amount)
-    '%.2f' % amount
+  def format_amount(amount_pence)
+    '%.2f' % (amount_pence / 100)
   end
 
   def format_date(date)
