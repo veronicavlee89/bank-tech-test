@@ -57,6 +57,7 @@ This program has been built in Ruby and is run via IRB in a terminal.
 ```
 
 #### Print your statement
+
 ```
 2.7.0 :007 > account.print_statement
 date || credit || debit || balance
@@ -64,6 +65,11 @@ date || credit || debit || balance
 03/11/2020 || 1000.00 || || 1000.00
  => nil
 ```
+##### Statement customisation
+**Date format**  
+The default date format is dd/mm/yyyy, however you can choose to use mm/dd/yyyy by  
+specifying a date_format of ':mm_dd'  
+ `account.print_statement(date_format: :mm_dd)`
 
 ### How to test:
 
@@ -106,6 +112,10 @@ I want all statements to have columns for date, credit, debit and balance
 So that the format is standard regardless of the transactions
 
 As a product owner
+I want the option of printing a statement with the date format of mm/dd/yyyy
+So that it's suitable for customers in other regions (e.g. American format)
+
+As a product owner
 I want to only allow amounts that are greater than 0 and up to 2 decimal places
 So that the transaction data maintains integrity
 ```
@@ -120,7 +130,7 @@ are made in the same day.
 |------------   |------------------------------------   |
 | BankAccount 	| deposit(amount, date(optional)) 	    |
 |             	| withdraw(amount, date(optional))      |
-|            	| print_statement 	                    |
+|            	| print_statement(date_format(optional))| 	                    |
 | Statement   	| initialize(transactions)              |
 |              	| print                                 |
 | Transaction   | initialize(type, amount, datetime)    |

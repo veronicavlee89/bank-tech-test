@@ -68,4 +68,16 @@ describe 'Feature: Banking' do
     account = BankAccount.new
     expect{ account.deposit(55.132) }.to raise_error(RuntimeError)
   end
+
+  context 'alternate statement options selected' do
+    it 'prints a statement with the date format of mm/dd/yyyy if selected' do
+      account = BankAccount.new
+      allow(Time).to receive(:now).and_return(Time.parse("2020-03-01 10:50:15"))
+      account.deposit(500.00)
+      expect{ account.print_statement(date_format: :mm_dd) }.to output(
+                                             "date || credit || debit || balance\n" +
+                                               "03/01/2020 || 500.00 || || 500.00\n").to_stdout
+    end
+  end
+
 end
