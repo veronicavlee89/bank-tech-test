@@ -19,8 +19,8 @@ class BankAccount
     add_transaction(:debit, amount, date)
   end
 
-  def print_statement(transactions: @transactions, statement_class: Statement)
-    statement = statement_class.new(transactions)
+  def print_statement(statement_class: Statement, date_format: :dd_mm)
+    statement = statement_class.new(@transactions, date_format: date_format)
     statement.print
   end
 
